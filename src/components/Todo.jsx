@@ -2,15 +2,16 @@ import { Badge, Box, Card, CardBody, Checkbox, HStack, IconButton, Text } from '
 import React, { useState } from 'react'
 import { DeleteIcon} from '@chakra-ui/icons'
 import {addDoc, collection, deleteDoc, doc, getDoc, setDoc, updateDoc} from "firebase/firestore"
-import { db } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 
 const Todo = ({todo, fetchTodos}) => {
 
   const [complete, setComplete] = useState(todo.completed);
+  
   const deleteTodo = async (todoId)=> {
     try {
       await deleteDoc(doc(db, "todos", todoId))
-      fetchTodos();
+      fetchTodos(auth.currentUser.uid);
     } catch (error) {
       console.error(error)
     }
@@ -19,8 +20,8 @@ const Todo = ({todo, fetchTodos}) => {
   const editCompletion = async (todoId)=> {
     setComplete(!complete)
     try {
-      await updateDoc(doc(db, "todos", todoId), {completd:!complete})
-      fetchTodos();
+      await updateDoc(doc(db, "todos", todoId), {completed:!complete})
+      fetchTodos(auth.currentUser.uid);
     } catch (error) {
       console.error(error)
     }

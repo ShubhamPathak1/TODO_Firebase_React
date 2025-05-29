@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import AllTodos from '../components/AllTodos';
 import TodoInput from '../components/TodoInput';
 import { db } from '../config/firebase'
-import {getDocs, collection} from "firebase/firestore"
+import {getDocs, collection, query, where} from "firebase/firestore"
 
 
 
@@ -15,10 +15,11 @@ const DashboardPage = () => {
 
   const [todosList, setTodosList] = useState([]);
 
-  const fetchTodos = async ()=> {
+  const fetchTodos = async (uid)=> {
     try {
       const todoCollectionRef = collection(db, "todos");
-      const todoPromise = await getDocs(todoCollectionRef);
+      const usersTodo = query(todoCollectionRef, where("userId", "==", uid))
+      const todoPromise = await getDocs(usersTodo);
       const todos = todoPromise.docs.map((doc)=> ({...doc.data(), id:doc.id}))
       setTodosList(todos)
     } catch (error) {
@@ -26,9 +27,9 @@ const DashboardPage = () => {
     }
   }
 
-  useEffect(() => {
-    fetchTodos();
-  }, [])
+  // useEffect(() => {
+  //   fetchTodos();
+  // }, [])
   
 
   const [userEmail, setUserEmail] = useState("");
@@ -49,6 +50,7 @@ const DashboardPage = () => {
     const unsubscribe = onAuthStateChanged(auth, (user)=> {
       if (user) {
         setUserEmail(user.email)
+        fetchTodos(user.uid)
       } else {
         navigate("/login")
       }

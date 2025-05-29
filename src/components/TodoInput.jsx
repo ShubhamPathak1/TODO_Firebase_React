@@ -1,7 +1,7 @@
 import { Button, Input } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import {addDoc, collection} from "firebase/firestore"
-import { db } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { AddIcon} from '@chakra-ui/icons'
 
 const TodoInput = ({fetchTodos}) => {
@@ -19,11 +19,12 @@ const TodoInput = ({fetchTodos}) => {
                 notes:todoNote,
                 deadline: todoDeadline,
                 completed:false,
+                userId: auth?.currentUser?.uid
             })
             setTodoTitle("")
             setTodoNote("")
             setTodoDeadline("")
-            fetchTodos();
+            fetchTodos(auth.currentUser.uid);
             
         } catch (error) {
             console.error(error)
