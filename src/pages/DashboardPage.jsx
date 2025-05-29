@@ -77,7 +77,7 @@ const DashboardPage = () => {
       <Button onClick={logout}>Logout</Button>
       </div>
         <TodoInput fetchTodos={fetchTodos} />
-        <AllTodos todosList={todosList} />
+        <AllTodos todosList={todosList} fetchTodos={fetchTodos} />
 
       </>
 

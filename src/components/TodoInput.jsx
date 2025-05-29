@@ -2,6 +2,7 @@ import { Button, Input } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import {addDoc, collection} from "firebase/firestore"
 import { db } from '../config/firebase';
+import { AddIcon} from '@chakra-ui/icons'
 
 const TodoInput = ({fetchTodos}) => {
 
@@ -35,7 +36,7 @@ const TodoInput = ({fetchTodos}) => {
         <Input placeholder='TODO Title' onChange={(e)=> {setTodoTitle(e.target.value)}} value={todoTitle} />
         <Input placeholder='Note...' onChange={(e)=> {setTodoNote(e.target.value)}} value={todoNote} />
         <Input placeholder='Deadline' type='date' onChange={(e)=> {setTodoDeadline(e.target.value)}} value={todoDeadline} />
-        <Button onClick={addTodo}>Add TODO</Button>
+        <Button leftIcon={<AddIcon />} onClick={addTodo}>Add TODO</Button>
     </div>
   )
 }
