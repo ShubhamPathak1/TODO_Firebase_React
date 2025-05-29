@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import {addDoc, collection} from "firebase/firestore"
 import { db } from '../config/firebase';
 
-const TodoInput = () => {
+const TodoInput = ({fetchTodos}) => {
 
     const [todoTitle, setTodoTitle] = useState();
     const [todoNote, setTodoNote] = useState();
@@ -19,6 +19,10 @@ const TodoInput = () => {
                 deadline: todoDeadline,
                 completed:false,
             })
+            setTodoTitle("")
+            setTodoNote("")
+            setTodoDeadline("")
+            fetchTodos();
             
         } catch (error) {
             console.error(error)
@@ -28,9 +32,9 @@ const TodoInput = () => {
 
   return (
     <div className='flex flex-col justify-center items-center gap-2'>
-        <Input placeholder='TODO Title' onChange={(e)=> {setTodoTitle(e.target.value)}} />
-        <Input placeholder='Note...' onChange={(e)=> {setTodoNote(e.target.value)}} />
-        <Input placeholder='Deadline' type='date' onChange={(e)=> {setTodoDeadline(e.target.value)}} />
+        <Input placeholder='TODO Title' onChange={(e)=> {setTodoTitle(e.target.value)}} value={todoTitle} />
+        <Input placeholder='Note...' onChange={(e)=> {setTodoNote(e.target.value)}} value={todoNote} />
+        <Input placeholder='Deadline' type='date' onChange={(e)=> {setTodoDeadline(e.target.value)}} value={todoDeadline} />
         <Button onClick={addTodo}>Add TODO</Button>
     </div>
   )

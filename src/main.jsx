@@ -24,11 +24,9 @@ const theme = extendTheme({ colors })
 
 const rootElement = document.getElementById('root')
 ReactDOM.createRoot(rootElement).render(
-  <StrictMode>
     <ChakraProvider theme={theme}>
       <BrowserRouter>
       <App />
       </BrowserRouter>
     </ChakraProvider>
-    </StrictMode>
 )

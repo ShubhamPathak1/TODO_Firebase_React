@@ -5,11 +5,31 @@ import {onAuthStateChanged, signOut} from "firebase/auth"
 import { useNavigate } from 'react-router-dom';
 import AllTodos from '../components/AllTodos';
 import TodoInput from '../components/TodoInput';
+import { db } from '../config/firebase'
+import {getDocs, collection} from "firebase/firestore"
 
 
 
 
 const DashboardPage = () => {
+
+  const [todosList, setTodosList] = useState([]);
+
+  const fetchTodos = async ()=> {
+    try {
+      const todoCollectionRef = collection(db, "todos");
+      const todoPromise = await getDocs(todoCollectionRef);
+      const todos = todoPromise.docs.map((doc)=> ({...doc.data(), id:doc.id}))
+      setTodosList(todos)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTodos();
+  }, [])
+  
 
   const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(true);
@@ -56,8 +76,8 @@ const DashboardPage = () => {
       <p>{userEmail}</p>
       <Button onClick={logout}>Logout</Button>
       </div>
-        <TodoInput />
-        <AllTodos />
+        <TodoInput fetchTodos={fetchTodos} />
+        <AllTodos todosList={todosList} />
 
       </>
 
