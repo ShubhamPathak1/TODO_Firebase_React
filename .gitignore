@@ -13,7 +13,7 @@ dist-ssr
 *.local
 
 # Ignore real Firebase config
-src/firebase.jsx
+src/config/firebase.jsx
 
 
 # Editor directories and files
