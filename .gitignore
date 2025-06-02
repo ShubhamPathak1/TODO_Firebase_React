@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Ignore real Firebase config
+src/firebase.jsx
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
